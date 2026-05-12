@@ -98,7 +98,8 @@ export class AccountService {
     private refreshTokenTimeout?: any;
 
     private startRefreshTokenTimer() {
-        const jwtBase64 = this.accountValue!.jwtToken!.split('.')[1];
+        const jwtToken = this.accountValue?.jwtToken ?? '';
+        const jwtBase64 = jwtToken.split('.')[1];
         const jwtToken = JSON.parse(atob(jwtBase64));
         const expires = new Date(jwtToken.exp * 1000);
         const timeout = expires.getTime() - Date.now() - (60 * 1000);
