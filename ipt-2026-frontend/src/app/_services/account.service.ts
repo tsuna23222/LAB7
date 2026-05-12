@@ -98,14 +98,13 @@ export class AccountService {
     private refreshTokenTimeout?: any;
 
     private startRefreshTokenTimer() {
-        const jwtToken = this.accountValue?.jwtToken ?? '';
-        const jwtBase64 = jwtToken.split('.')[1];
-        const jwtToken = JSON.parse(atob(jwtBase64));
-        const expires = new Date(jwtToken.exp * 1000);
-        const timeout = expires.getTime() - Date.now() - (60 * 1000);
-        this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
-    }
-
+    const rawToken = String(this.accountValue?.jwtToken ?? '');
+    const jwtBase64 = rawToken.split('.')[1];
+    const jwtPayload = JSON.parse(atob(jwtBase64));
+    const expires = new Date(jwtPayload.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+}
     private stopRefreshTokenTimer() {
         clearTimeout(this.refreshTokenTimeout);
     }
