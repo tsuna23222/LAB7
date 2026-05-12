@@ -1,0 +1,7 @@
+<h4 class="card-title">Verify Email</h4>
+<div *ngIf="emailVerified">
+    <p>Your email has been verified, you can now <a routerLink="/account/login">login</a>.</p>
+</div>
+<div *ngIf="!emailVerified">
+    <p>Verifying your email...</p>
+</div>
