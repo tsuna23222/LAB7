@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { AccountService } from '@app/_services';
 import { AlertService } from '@app/_services';
+import { Router } from '@angular/router';
 
 @Component({
     standalone: false,
@@ -14,6 +15,7 @@ export class VerifyEmailComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private accountService: AccountService,
         private alertService: AlertService
     ) { }
@@ -23,8 +25,9 @@ export class VerifyEmailComponent implements OnInit {
         this.accountService.verifyEmail(token)
             .subscribe({
                 next: () => {
-                    this.alertService.success('Email verified successfully, you can now login', { keepAfterRouteChange: true });
                     this.emailVerified = true;
+                    this.alertService.success('Email verified successfully, you can now login', { keepAfterRouteChange: true });
+                    setTimeout(() => this.router.navigate(['/account/login']), 2000);
                 },
                 error: err => {
                     this.alertService.error(err);
